@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Новогодний кроссворд</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f8ff;
+      margin: 20px;
+      color: #222;
+    }
+    h1 {
+      text-align: center;
+      color: #c1272d;
+      text-shadow: 1px 1px 2px #ccc;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .crossword-grid {
+      display: grid;
+      grid-template-columns: repeat(11, 40px);
+      grid-template-rows: repeat(11, 40px);
+      gap: 1px;
+      background: black;
+      padding: 4px;
+      border: 2px solid #444;
+      border-radius: 6px;
+    }
+    .cell {
+      width: 40px;
+      height: 40px;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      font-size: 18px;
+      font-weight: bold;
+      color: #222;
+    }
+    .cell.black {
+      background: #333;
+    }
+    .cell-number {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-size: 10px;
+      color: red;
+      font-weight: bold;
+    }
+    .questions {
+      background: #fff9e6;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      max-width: 300px;
+    }
+    .questions h2 {
+      margin-top: 0;
+      color: #c1272d;
+    }
+    .question {
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .question span {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎄 Новогодний кроссворд</h1>
+
+  <div class="container">
+    <div class="crossword-grid" id="grid"></div>
+
+    <div class="questions">
+      <h2>Вопросы:</h2>
+      <div class="question"><span>1.</span> Главное новогоднее дерево</div>
+      <div class="question"><span>2.</span> Внучка Деда Мороза</div>
+      <div class="question"><span>3.</span> Украшения на ёлке</div>
+      <div class="question"><span>4.</span> Иголки на новогодней красавице</div>
+      <div class="question"><span>5.</span> Белое зимнее покрывало</div>
+      <div class="question"><span>6.</span> Человечек из белых комков</div>
+      <div class="question"><span>7.</span> Сияет на макушке ёлки</div>
+      <div class="question"><span>8.</span> Уличное украшение с огоньками</div>
+      <div class="question"><span>9.</span> Разноцветные бумажки праздника</div>
+      <div class="question"><span>10.</span> То, что ждёшь под ёлкой</div>
+    </div>
+  </div>
+
+  <script>
+    // Размер сетки: 11x11
+    const size = 11;
+    const grid = Array(size).fill().map(() => Array(size).fill(null));
+
+    // Слова: [номер, слово, строка, столбец, направление ('h' или 'v')]
+    const words = [
+      [1, "ЁЛКА", 0, 3, 'h'],
+      [2, "СНЕГУРОЧКА", 0, 5, 'v'],
+      [3, "ШАРИКИ", 3, 2, 'h'],
+      [4, "ХВОЯ", 6, 2, 'v'],
+      [5, "СНЕГ", 2, 8, 'h'],
+      [6, "СНЕГОВИК", 4, 8, 'v'],
+      [7, "ЗВЕЗДА", 10, 0, 'h'],
+      [8, "ФОНАРИКИ", 7, 0, 'h'],
+      [9, "КОНФЕТИ", 5, 6, 'v'],
+      [10, "ПОДАРКИ", 8, 3, 'h']
+    ];
+
+    // Размещаем слова в сетке
+    words.forEach(([num, word, row, col, dir]) => {
+      const chars = [...word.toUpperCase()];
+      for (let i = 0; i < chars.length; i++) {
+        let r = row, c = col;
+        if (dir === 'h') c += i;
+        else r += i;
+        if (r < size && c < size) {
+          if (grid[r][c] === null) grid[r][c] = { letter: chars[i], number: i === 0 ? num : null };
+          else if (grid[r][c].letter !== chars[i]) {
+            console.warn(`Конфликт в клетке [${r}][${c}]: ${grid[r][c].letter} vs ${chars[i]}`);
+          } else if (i === 0) {
+            grid[r][c].number = num;
+          }
+        }
+      }
+    });
+
+    // Рендер сетки
+    const gridEl = document.getElementById('grid');
+    for (let r = 0; r < size; r++) {
+      for (let c = 0; c < size; c++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        if (grid[r][c] === null) {
+          cell.classList.add('black');
+        } else {
+          cell.textContent = grid[r][c].letter;
+          if (grid[r][c].number !== null) {
+            const numEl = document.createElement('div');
+            numEl.className = 'cell-number';
+            numEl.textContent = grid[r][c].number;
+            cell.appendChild(numEl);
+          }
+        }
+        gridEl.appendChild(cell);
+      }
+    }
+  </script>
+</body>
+</html>

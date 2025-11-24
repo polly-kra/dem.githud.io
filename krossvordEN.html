@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Christmas Crossword</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e6f7ff;
+      margin: 20px;
+      color: #222;
+    }
+    h1 {
+      text-align: center;
+      color: #d32f2f;
+      text-shadow: 1px 1px 2px #bbb;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .crossword-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 45px);
+      grid-template-rows: repeat(7, 45px);
+      gap: 1px;
+      background: #333;
+      padding: 4px;
+      border: 2px solid #555;
+      border-radius: 6px;
+    }
+    .cell {
+      width: 45px;
+      height: 45px;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      font-size: 18px;
+      font-weight: bold;
+      color: #111;
+    }
+    .cell.black {
+      background: #222;
+    }
+    .cell-number {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-size: 10px;
+      color: red;
+      font-weight: bold;
+    }
+    .questions {
+      background: #fff9e6;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      max-width: 280px;
+    }
+    .questions h2 {
+      margin-top: 0;
+      color: #d32f2f;
+    }
+    .question {
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .question span {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎄 Christmas Crossword</h1>
+
+  <div class="container">
+    <div class="crossword-grid" id="grid"></div>
+
+    <div class="questions">
+      <h2>Clues:</h2>
+      <div class="question"><span>1.</span> Evergreen decorated at Christmas</div>
+      <div class="question"><span>2.</span> White flakes that fall in winter</div>
+      <div class="question"><span>3.</span> Present under the tree</div>
+      <div class="question"><span>4.</span> Shiny symbol on top of the tree</div>
+      <div class="question"><span>5.</span> Santa's tiny helper</div>
+    </div>
+  </div>
+
+  <script>
+    const SIZE = 7;
+    const grid = Array(SIZE).fill().map(() => Array(SIZE).fill(null));
+
+    // Format: [number, word, row, col, direction ('h' or 'v')]
+    const words = [
+      [1, "TREE",   1, 2, 'h'],
+      [2, "SNOW",   0, 5, 'v'],
+      [3, "GIFT",   3, 1, 'h'],
+      [4, "STAR",   6, 2, 'h'],
+      [5, "ELF",    3, 5, 'v']
+    ];
+
+    // Place words on the grid
+    words.forEach(([num, word, row, col, dir]) => {
+      const chars = [...word.toUpperCase()];
+      for (let i = 0; i < chars.length; i++) {
+        let r = row, c = col;
+        if (dir === 'h') c += i;
+        else r += i;
+        if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
+          if (grid[r][c] === null) {
+            grid[r][c] = { letter: chars[i], number: i === 0 ? num : null };
+          } else if (grid[r][c].letter === chars[i]) {
+            if (i === 0) grid[r][c].number = num;
+          } else {
+            console.warn(`Conflict at [${r}][${c}]: ${grid[r][c].letter} vs ${chars[i]}`);
+          }
+        }
+      }
+    });
+
+    // Render grid
+    const gridEl = document.getElementById('grid');
+    for (let r = 0; r < SIZE; r++) {
+      for (let c = 0; c < SIZE; c++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        if (grid[r][c] === null) {
+          cell.classList.add('black');
+        } else {
+          cell.textContent = grid[r][c].letter;
+          if (grid[r][c].number !== null) {
+            const numEl = document.createElement('div');
+            numEl.className = 'cell-number';
+            numEl.textContent = grid[r][c].number;
+            cell.appendChild(numEl);
+          }
+        }
+        gridEl.appendChild(cell);
+      }
+    }
+  </script>
+</body>
+</html>
