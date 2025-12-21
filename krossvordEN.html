@@ -1,102 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>New Year Crossword</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f9f3ff;
-      padding: 20px;
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      color: #c21807;
-    }
-    .grid {
-      display: inline-block;
-      border: 2px solid #333;
-      margin: 20px auto;
-      background-color: white;
-    }
-    .grid td {
-      width: 40px;
-      height: 40px;
-      text-align: center;
-      vertical-align: middle;
-      font-weight: bold;
-      font-size: 18px;
-      border: 1px solid #666;
-      background-color: white;
-    }
-    .black {
-      background-color: #000;
-    }
-    .clues {
-      max-width: 600px;
-      margin: 30px auto;
-    }
-    .clues h2 {
-      color: #1b5e20;
-      margin-top: 25px;
-    }
-    .clue {
-      margin: 8px 0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>New Year Crossword</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            padding: 20px;
+        }
+        h1 {
+            color: #c1272d;
+        }
+        .crossword-container {
+            display: inline-block;
+            margin: 20px auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(15, 30px);
+            grid-gap: 1px;
+            margin: 0 auto;
+        }
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border: 1px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #000;
+        }
+        .black {
+            background-color: #333;
+        }
+        .clues {
+            margin-top: 30px;
+            text-align: left;
+            display: inline-block;
+            max-width: 600px;
+        }
+        .clues h2 {
+            color: #2c5530;
+        }
+        .clue-list {
+            columns: 2;
+            column-gap: 40px;
+        }
+        .clue {
+            margin: 5px 0;
+        }
+        .highlight {
+            background-color: #ffeb3b;
+        }
+    </style>
 </head>
 <body>
+    <h1>🎄 New Year Crossword Puzzle 🎄</h1>
+    <p><em>10 English words related to New Year & Christmas. Find them all!</em></p>
 
-<h1>New Year & Christmas Crossword</h1>
+    <div class="crossword-container">
+        <div class="grid" id="grid"></div>
+    </div>
 
-<!-- 10x10 grid -->
-<table class="grid" cellspacing="0">
-  <tr>
-    <td>s</td><td>n</td><td>o</td><td>w</td><td>m</td><td>a</td><td>n</td><td class="black"></td><td class="black"></td><td class="black"></td>
-  </tr>
-  <tr>
-    <td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td>e</td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td>
-  </tr>
-  <tr>
-    <td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td>w</td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td>
-  </tr>
-  <tr>
-    <td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td>m</td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td>
-  </tr>
-  <tr>
-    <td>s</td><td>a</td><td>n</td><td>t</td><td>a</td><td>c</td><td>l</td><td>a</td><td>u</td><td>s</td>
-  </tr>
-  <tr>
-    <td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td>n</td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td>
-  </tr>
-  <tr>
-    <td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td>e</td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td>
-  </tr>
-  <tr>
-    <td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td>e</td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td>
-  </tr>
-  <tr>
-    <td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td>n</td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td><td class="black"></td>
-  </tr>
-  <tr>
-    <td>g</td><td>i</td><td>f</td><td>t</td><td>s</td><td>c</td><td>h</td><td>e</td><td>e</td><td>r</td>
-  </tr>
-</table>
+    <div class="clues">
+        <h2>Clues</h2>
+        <div class="clue-list">
+            <div class="clue"><strong>Across:</strong></div>
+            <div class="clue">1. A figure made of snow, often with a carrot nose → <em>SNOWMAN</em></div>
+            <div class="clue">4. A small present, often under the tree → <em>GIFT</em></div>
+            <div class="clue">6. Sound made by Santa's bells: ___ Bells → <em>JINGLE</em></div>
+            <div class="clue">7. French word for Christmas, also a name → <em>NOEL</em></div>
+            <div class="clue">9. A famous snowman with a top hat → <em>FROSTY</em></div>
 
-<div class="clues">
-  <h2>Across:</h2>
-  <div class="clue">1. White flakes that fall in winter (3 letters)</div>
-  <div class="clue">5. Jolly man in red suit who brings presents (9 letters)</div>
-  <div class="clue">10. Presents given during the holidays (5 letters)</div>
+            <div class="clue"><strong>Down:</strong></div>
+            <div class="clue">1. Santa's animal helpers (e.g., Rudolph) → <em>REINDEER</em></div>
+            <div class="clue">2. Decorated evergreen in December → <em>TREE</em></div>
+            <div class="clue">3. Ringing sound on Santa's sleigh → <em>BELLS</em></div>
+            <div class="clue">5. Traditional festive song → <em>CAROL</em></div>
+            <div class="clue">8. Old word for Christmas (___ log) → <em>YULE</em></div>
+        </div>
+    </div>
 
-  <h2>Down:</h2>
-  <div class="clue">1. Things you exchange at Christmas (5 letters)</div>
-  <div class="clue">2. Santa’s helper (3 letters)</div>
-  <div class="clue">3. Season of New Year (4 letters)</div>
-  <div class="clue">4. Shiny balls you hang on the tree (5 letters)</div>
-  <div class="clue">5. Holiday drink often served with cinnamon (4 letters)</div>
-</div>
+    <script>
+        // 15x15 grid: '.' = empty, '#' = black cell, letters = filled
+        const gridData = [
+            // 0         1         2         3         4         5         6         7         8         9        10        11        12        13        14
+            ['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'], // 0
+            ['#','#','#','#','#','#','S','N','O','W','M','A','N','#','#'], // 1 → SNOWMAN (7 letters, starts at [1][6])
+            ['#','#','#','R','#','#','R','#','#','#','#','#','#','#','#'], // 2 → R (from REINDEER)
+            ['#','#','#','E','#','#','E','#','#','#','#','#','#','#','#'], // 3 → E
+            ['#','G','I','F','T','#','I','#','#','#','#','#','#','#','#'], // 4 → GIFT (4) & I (REINDEER)
+            ['#','#','#','N','#','#','N','#','#','J','I','N','G','L','E'], // 5 → N & N (REINDEER), JINGLE (6) starts at [5][9]
+            ['#','#','T','D','#','#','D','#','#','#','O','#','#','#','#'], // 6 → T (TREE), D & D (REINDEER)
+            ['#','#','R','E','#','#','E','#','N','O','E','L','#','#','#'], // 7 → R (TREE), E (REINDEER), NOEL (4) starts at [7][8]
+            ['#','#','E','#','#','B','E','L','L','S','#','#','#','#','#'], // 8 → E (TREE), BELLS (5) starts at [8][5]
+            ['#','C','#','#','#','E','#','#','#','#','#','#','#','#','#'], // 9 → C (CAROL)
+            ['#','A','#','#','F','L','#','#','#','#','#','#','#','#','#'], //10 → A (CAROL), F (FROSTY)
+            ['#','R','Y','U','L','E','#','#','#','#','#','#','#','#','#'], //11 → R (CAROL), YULE (4) starts at [11][2], E (YULE)
+            ['#','O','#','#','#','S','#','#','#','#','#','#','#','#','#'], //12 → O (CAROL), S (FROSTY)
+            ['#','L','#','F','R','O','S','T','Y','#','#','#','#','#','#'], //13 → L (CAROL), FROSTY (6) starts at [13][3]
+            ['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'], //14
+        ];
+
+        const grid = document.getElementById('grid');
+
+        for (let row = 0; row < 15; row++) {
+            for (let col = 0; col < 15; col++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                const val = gridData[row][col];
+                if (val === '#') {
+                    cell.classList.add('black');
+                } else if (val !== '.') {
+                    cell.textContent = val;
+                    // Optional: highlight starting letters (1A, 1D, etc.) — skipped for simplicity
+                }
+                grid.appendChild(cell);
+            }
+        }
+    </script>
 <a href="index.html">На главную</a>
 </body>
 </html>
