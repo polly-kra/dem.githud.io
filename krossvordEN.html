@@ -3,144 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Christmas Crossword</title>
+  <title>New Year Crossword</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #e6f7ff;
-      margin: 20px;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #e6f7ff, #ffffff);
+      padding: 20px;
+      text-align: center;
       color: #222;
     }
     h1 {
-      text-align: center;
-      color: #d32f2f;
-      text-shadow: 1px 1px 2px #bbb;
+      color: #c1272d;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
     .container {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 30px;
-      max-width: 900px;
-      margin: 0 auto;
+      margin-top: 15px;
     }
     .crossword-grid {
       display: grid;
-      grid-template-columns: repeat(7, 45px);
-      grid-template-rows: repeat(7, 45px);
+      grid-template-columns: repeat(15, 32px);
       gap: 1px;
-      background: #333;
-      padding: 4px;
-      border: 2px solid #555;
-      border-radius: 6px;
+      background-color: #333;
+      padding: 3px;
+      border: 3px solid #222;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     .cell {
-      width: 45px;
-      height: 45px;
-      background: white;
+      width: 32px;
+      height: 32px;
+      background-color: white;
       display: flex;
-      justify-content: center;
       align-items: center;
-      position: relative;
-      font-size: 18px;
+      justify-content: center;
       font-weight: bold;
-      color: #111;
+      font-size: 16px;
+      position: relative;
+      text-transform: uppercase;
     }
     .cell.black {
-      background: #222;
+      background-color: #111;
     }
-    .cell-number {
+    .cell .number {
       position: absolute;
       top: 2px;
       left: 2px;
       font-size: 10px;
-      color: red;
+      color: #000;
       font-weight: bold;
     }
-    .questions {
-      background: #fff9e6;
+    .clues {
+      text-align: left;
+      max-width: 320px;
+      background: #fff;
       padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      max-width: 280px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .questions h2 {
+    .clues h2 {
       margin-top: 0;
-      color: #d32f2f;
+      color: #c1272d;
     }
-    .question {
-      margin-bottom: 10px;
-      line-height: 1.4;
+    .clue {
+      margin: 6px 0;
+      font-size: 15px;
     }
-    .question span {
-      color: red;
-      font-weight: bold;
+    .across, .down {
+      margin-top: 12px;
     }
   </style>
 </head>
 <body>
-  <h1>🎄 Christmas Crossword</h1>
-
+  <h1>🎄 New Year Crossword Puzzle 🎄</h1>
+  
   <div class="container">
     <div class="crossword-grid" id="grid"></div>
 
-    <div class="questions">
-      <h2>Clues:</h2>
-      <div class="question"><span>1.</span> Evergreen decorated at Christmas</div>
-      <div class="question"><span>2.</span> White flakes that fall in winter</div>
-      <div class="question"><span>3.</span> Present under the tree</div>
-      <div class="question"><span>4.</span> Shiny symbol on top of the tree</div>
-      <div class="question"><span>5.</span> Santa's tiny helper</div>
+    <div class="clues">
+      <h2>Clues</h2>
+      
+      <div class="across">
+        <strong>Across:</strong>
+        <div class="clue">1. White flakes from the sky</div>        <!-- SNOW -->
+        <div class="clue">5. Present under the tree</div>           <!-- GIFT -->
+        <div class="clue">7. Christmas song</div>                   <!-- CAROL -->
+        <div class="clue">8. Santa's vehicle</div>                  <!-- SLEIGH -->
+        <div class="clue">10. "___ Old Saint Nicholas"</div>        <!-- JOLLY -->
+        <div class="clue">12. French for "Christmas"</div>          <!-- NOEL -->
+        <div class="clue">14. Santa's helper</div>                  <!-- ELF -->
+        <div class="clue">15. Shiny object on top of the tree</div> <!-- STAR -->
+        <div class="clue">16. Decorated evergreen plant</div>       <!-- TREE -->
+      </div>
+
+      <div class="down">
+        <strong>Down:</strong>
+        <div class="clue">1. Santa's animal with antlers</div>      <!-- REINDEER -->
+        <div class="clue">2. Part of REINDEER (not used alone)</div> <!-- — -->
+        <div class="clue">3. —</div>
+        <div class="clue">4. —</div>
+        <div class="clue">6. —</div>
+        <div class="clue">9. —</div>
+        <div class="clue">11. —</div>
+        <div class="clue">13. —</div>
+      </div>
     </div>
   </div>
 
   <script>
-    const SIZE = 7;
-    const grid = Array(SIZE).fill().map(() => Array(SIZE).fill(null));
+    const SIZE = 15;
+    const grid = Array(SIZE).fill().map(() => Array(SIZE).fill(''));
+    const numbers = Array(SIZE).fill().map(() => Array(SIZE).fill(''));
+    let currentNumber = 1;
 
-    // Format: [number, word, row, col, direction ('h' or 'v')]
+    // Helper to check if a cell is start of word (across or down)
+    function shouldNumber(r, c) {
+      const hasLeft = c > 0 && grid[r][c - 1] !== '';
+      const hasRight = c < SIZE - 1 && grid[r][c + 1] !== '';
+      const hasTop = r > 0 && grid[r - 1][c] !== '';
+      const hasBottom = r < SIZE - 1 && grid[r + 1][c] !== '';
+
+      const isStartAcross = !hasLeft && hasRight;
+      const isStartDown = !hasTop && hasBottom;
+
+      return isStartAcross || isStartDown;
+    }
+
+    // Place words manually with coordinates
     const words = [
-      [1, "TREE",   1, 2, 'h'],
-      [2, "SNOW",   0, 5, 'v'],
-      [3, "GIFT",   3, 1, 'h'],
-      [4, "STAR",   6, 2, 'h'],
-      [5, "ELF",    3, 5, 'v']
+      // [word, row, col, horizontal?]
+      ['SNOW', 0, 0, true],         // 1 Across
+      ['GIFT', 2, 4, true],         // 5 Across
+      ['CAROL', 4, 2, true],        // 7 Across
+      ['SLEIGH', 6, 0, true],       // 8 Across
+      ['JOLLY', 8, 6, true],        // 10 Across
+      ['NOEL', 10, 3, true],        // 12 Across
+      ['ELF', 12, 0, true],         // 14 Across
+      ['STAR', 12, 6, true],        // 15 Across
+      ['TREE', 14, 2, true],        // 16 Across
+      ['REINDEER', 0, 0, false]     // 1 Down
     ];
 
-    // Place words on the grid
-    words.forEach(([num, word, row, col, dir]) => {
-      const chars = [...word.toUpperCase()];
-      for (let i = 0; i < chars.length; i++) {
-        let r = row, c = col;
-        if (dir === 'h') c += i;
-        else r += i;
-        if (r >= 0 && r < SIZE && c >= 0 && c < SIZE) {
-          if (grid[r][c] === null) {
-            grid[r][c] = { letter: chars[i], number: i === 0 ? num : null };
-          } else if (grid[r][c].letter === chars[i]) {
-            if (i === 0) grid[r][c].number = num;
-          } else {
-            console.warn(`Conflict at [${r}][${c}]: ${grid[r][c].letter} vs ${chars[i]}`);
-          }
+    // Fill grid with letters
+    words.forEach(([word, r, c, hor]) => {
+      for (let i = 0; i < word.length; i++) {
+        const rr = hor ? r : r + i;
+        const cc = hor ? c + i : c;
+        if (rr < SIZE && cc < SIZE) {
+          grid[rr][cc] = word[i];
         }
       }
     });
+
+    // Assign numbers to starting cells
+    for (let r = 0; r < SIZE; r++) {
+      for (let c = 0; c < SIZE; c++) {
+        if (grid[r][c] !== '' && shouldNumber(r, c)) {
+          numbers[r][c] = currentNumber.toString();
+          currentNumber++;
+        }
+      }
+    }
 
     // Render grid
     const gridEl = document.getElementById('grid');
     for (let r = 0; r < SIZE; r++) {
       for (let c = 0; c < SIZE; c++) {
         const cell = document.createElement('div');
-        cell.className = 'cell';
-        if (grid[r][c] === null) {
+        cell.classList.add('cell');
+        if (grid[r][c] === '') {
           cell.classList.add('black');
         } else {
-          cell.textContent = grid[r][c].letter;
-          if (grid[r][c].number !== null) {
-            const numEl = document.createElement('div');
-            numEl.className = 'cell-number';
-            numEl.textContent = grid[r][c].number;
-            cell.appendChild(numEl);
+          cell.textContent = grid[r][c];
+          if (numbers[r][c]) {
+            const numSpan = document.createElement('span');
+            numSpan.className = 'number';
+            numSpan.textContent = numbers[r][c];
+            cell.appendChild(numSpan);
           }
         }
         gridEl.appendChild(cell);
